@@ -330,7 +330,7 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
             NEL_METO_ID = []
             no_space_after = []
             end_of_line = []
-            end_of_sentence = []
+            pysdbsegment = []
 
             new_sentence = False
 
@@ -364,7 +364,7 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
                             "NEL_METO_ID": NEL_METO_ID,
                             "no_space_after": no_space_after,
                             "end_of_line": end_of_line,
-                            "end_of_sentence": end_of_sentence,
+                            "PySBDSegment":pysdbsegment,
                             "date": date,
                             "title": title,
                             "document_id": document_id,
@@ -381,7 +381,7 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
                         NEL_METO_ID = []
                         no_space_after = []
                         end_of_line = []
-                        end_of_sentence = []
+                        pysdbsegment = []
                 else:
                     # New row if there is a new sentence
                     if new_sentence == True:
@@ -398,7 +398,10 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
                             "NEL_METO_ID": NEL_METO_ID,
                             "no_space_after": no_space_after,
                             "end_of_line": end_of_line,
-                            "end_of_sentence": end_of_sentence,
+                            "PySBDSegment":pysdbsegment,
+                            "date": date,
+                            "title": title,
+                            "document_id": document_id,
                         }
                         guid += 1
                         tokens = []
@@ -412,7 +415,7 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
                         NEL_METO_ID = []
                         no_space_after = []
                         end_of_line = []
-                        end_of_sentence = []
+                        pysdbsegment = []
                     
                     # HIPE 2020 tokens are tab separated
                     splits = line.split(
@@ -430,12 +433,12 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
                     misc = splits[-1]
                     is_space = "NoSpaceAfter" in misc
                     is_end_of_line = "EndOfLine" in misc
-                    is_end_of_sentence = "PySBDSegment" in misc
+                    PySBDSegment = "PySBDSegment" in misc
                     no_space_after.append(is_space)
                     end_of_line.append(is_end_of_line)
-                    end_of_sentence.append(is_end_of_sentence)
+                    pysdbsegment.append(PySBDSegment)
 
-                    new_sentence = is_end_of_sentence
+                    new_sentence = PySBDSegment
 
             # last example
             yield guid, {
@@ -451,9 +454,8 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
                 "NEL_METO_ID": NEL_METO_ID,
                 "no_space_after": no_space_after,
                 "end_of_line": end_of_line,
-                "end_of_sentence": end_of_sentence,
+                "PySBDSegment":pysdbsegment,
                 "date": date,
                 "title": title,
                 "document_id": document_id,
             }
-
