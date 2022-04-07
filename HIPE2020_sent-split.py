@@ -30,23 +30,23 @@ _DESCRIPTION = """\
 TODO
 """
 
-_BASE_URL_TRAIN_DEV = "https://raw.githubusercontent.com/impresso/CLEF-HIPE-2020/master/data/v1.4/"
+_BASE_URL_TRAIN_DEV_TEST = "https://github.com/impresso/CLEF-HIPE-2020/tree/master/data/v1.4/"
 
 
 _URLs = {
     "EN": {
-        "dev": _BASE_URL_TRAIN_DEV + "en/HIPE-data-v1.4-dev-en.tsv?raw=true",
-        "test": _BASE_URL_TRAIN_DEV + "en/HIPE-data-v1.4-test-en.tsv?raw=true"
+        "dev": _BASE_URL_TRAIN_DEV_TEST + "en/HIPE-data-v1.4-dev-en.tsv?raw=true",
+        "test": _BASE_URL_TRAIN_DEV_TEST + "en/HIPE-data-v1.4-test-en.tsv?raw=true"
     },  # English only no train
     "DE": {
-        "dev": _BASE_URL_TRAIN_DEV + "de/HIPE-data-v1.4-dev-de.tsv?raw=true",
-        "train": _BASE_URL_TRAIN_DEV + "de/HIPE-data-v1.4-train-de.tsv?raw=true",
-        "test": _BASE_URL_TRAIN_DEV + "de/HIPE-data-v1.4-test-de.tsv?raw=true"
+        "dev": _BASE_URL_TRAIN_DEV_TEST + "de/HIPE-data-v1.4-dev-de.tsv?raw=true",
+        "train": _BASE_URL_TRAIN_DEV_TEST + "de/HIPE-data-v1.4-train-de.tsv?raw=true",
+        "test": _BASE_URL_TRAIN_DEV_TEST + "de/HIPE-data-v1.4-test-de.tsv?raw=true"
     },
     "FR": {
-        "dev": _BASE_URL_TRAIN_DEV + "fr/HIPE-data-v1.4-dev-fr.tsv?raw=true",
-        "train": _BASE_URL_TRAIN_DEV + "fr/HIPE-data-v1.4-train-fr.tsv?raw=true",
-        "test": _BASE_URL_TRAIN_DEV + "fr/HIPE-data-v1.4-test-fr.tsv?raw=true"
+        "dev": _BASE_URL_TRAIN_DEV_TEST + "fr/HIPE-data-v1.4-dev-fr.tsv?raw=true",
+        "train": _BASE_URL_TRAIN_DEV_TEST + "fr/HIPE-data-v1.4-train-fr.tsv?raw=true",
+        "test": _BASE_URL_TRAIN_DEV_TEST + "fr/HIPE-data-v1.4-test-fr.tsv?raw=true"
     },
 }
 
