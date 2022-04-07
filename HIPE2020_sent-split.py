@@ -30,23 +30,23 @@ _DESCRIPTION = """\
 TODO
 """
 
-_BASE_URL_TRAIN_DEV_TEST = "https://github.com/impresso/CLEF-HIPE-2020/tree/master/data/v1.4/"
+_BASE_URL_TRAIN_DEV_TEST = "https://raw.githubusercontent.com/impresso/CLEF-HIPE-2020/master/data/v1.4/"
 
 
 _URLs = {
     "EN": {
-        "dev": _BASE_URL_TRAIN_DEV_TEST + "en/HIPE-data-v1.4-dev-en.tsv?raw=true",
-        "test": _BASE_URL_TRAIN_DEV_TEST + "en/HIPE-data-v1.4-test-en.tsv?raw=true"
+        "dev": _BASE_URL_TRAIN_DEV_TEST + "en/HIPE-data-v1.4-dev-en.tsv",
+        "test": _BASE_URL_TRAIN_DEV_TEST + "en/HIPE-data-v1.4-test-en.tsv"
     },  # English only no train
     "DE": {
-        "dev": _BASE_URL_TRAIN_DEV_TEST + "de/HIPE-data-v1.4-dev-de.tsv?raw=true",
-        "train": _BASE_URL_TRAIN_DEV_TEST + "de/HIPE-data-v1.4-train-de.tsv?raw=true",
-        "test": _BASE_URL_TRAIN_DEV_TEST + "de/HIPE-data-v1.4-test-de.tsv?raw=true"
+        "dev": _BASE_URL_TRAIN_DEV_TEST + "de/HIPE-data-v1.4-dev-de.tsv",
+        "train": _BASE_URL_TRAIN_DEV_TEST + "de/HIPE-data-v1.4-train-de.tsv",
+        "test": _BASE_URL_TRAIN_DEV_TEST + "de/HIPE-data-v1.4-test-de.tsv"
     },
     "FR": {
-        "dev": _BASE_URL_TRAIN_DEV_TEST + "fr/HIPE-data-v1.4-dev-fr.tsv?raw=true",
-        "train": _BASE_URL_TRAIN_DEV_TEST + "fr/HIPE-data-v1.4-train-fr.tsv?raw=true",
-        "test": _BASE_URL_TRAIN_DEV_TEST + "fr/HIPE-data-v1.4-test-fr.tsv?raw=true"
+        "dev": _BASE_URL_TRAIN_DEV_TEST + "fr/HIPE-data-v1.4-dev-fr.tsv",
+        "train": _BASE_URL_TRAIN_DEV_TEST + "fr/HIPE-data-v1.4-train-fr.tsv",
+        "test": _BASE_URL_TRAIN_DEV_TEST + "fr/HIPE-data-v1.4-test-fr.tsv"
     },
 }
 
@@ -121,6 +121,7 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
                                 "B-org",
                                 "B-pers",
                                 "B-prod",
+                                "B-time",
                                 "I-loc",
                                 "I-org",
                                 "I-pers",
@@ -168,6 +169,7 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
                                 "I-loc.adm.town",
                                 "I-loc.fac",
                                 "I-loc.oro",
+                                "I-loc.phys.astro",
                                 "I-loc.phys.geo",
                                 "I-loc.phys.hydro",
                                 "I-loc.unk",
@@ -193,6 +195,7 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
                             names=[
                                 "O",
                                 "B-loc",
+                                "B-loc.adm.nat",
                                 "B-loc.adm.reg",
                                 "B-loc.adm.town",
                                 "B-loc.fac",
@@ -203,7 +206,9 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
                                 "B-pers.coll",
                                 "B-pers.ind",
                                 "B-prod.media",
+                                "B-time.date.abs",
                                 "I-loc",
+                                "I-loc.adm.nat",
                                 "I-loc.adm.reg",
                                 "I-loc.fac",
                                 "I-loc.oro",
@@ -258,14 +263,17 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
                                 "I-loc.adm.nat",
                                 "I-loc.adm.reg",
                                 "I-loc.adm.town",
+                                "I-loc.adm.sup",
                                 "I-loc.fac",
                                 "I-loc.oro",
+                                "I-loc.phys.astro",
                                 "I-loc.phys.geo",
                                 "I-loc.phys.hydro",
                                 "I-org",
                                 "I-org.adm",
                                 "I-org.ent",
                                 "I-pers.ind",
+                                "I-prod.media",
                                 "_",
                             ]
                         )
@@ -286,35 +294,33 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
         )
 
     def _split_generators(self, dl_manager):
-        """Returns SplitGenerators.""" 
+        """Returns SplitGenerators."""
         downloaded_files = dl_manager.download_and_extract(self.config.data_urls)
+        data_files = {
+            "dev": downloaded_files["dev"],
+            "test": downloaded_files["test"],
+        }
+        splits = [
+            datasets.SplitGenerator(
+                name=datasets.Split.VALIDATION,
+                gen_kwargs={"filepath": data_files["dev"]},
+            ),
+            datasets.SplitGenerator(
+                name=datasets.Split.TEST,
+                gen_kwargs={"filepath": data_files["test"]},
+            ),
+        ]
         if self.config.name != "en":
-            data_files = {
+            data_files.update({
                 "train": downloaded_files["train"],
-                "dev": downloaded_files["dev"],
-            }
-        else:
-            data_files = {"dev": downloaded_files["dev"]}
-        if self.config.name == "en":
-            return [
-                datasets.SplitGenerator(
-                    name=datasets.Split.VALIDATION,
-                    gen_kwargs={"filepath": data_files["dev"]},
-                ),
-                # datasets.SplitGenerator(name=datasets.Split.TEST, gen_kwargs={"filepath": data_files["test"]}), # TODO add test splits
-            ]
-
-        else:
-            return [
+            })
+            splits += [
                 datasets.SplitGenerator(
                     name=datasets.Split.TRAIN,
                     gen_kwargs={"filepath": data_files["train"]},
                 ),
-                datasets.SplitGenerator(
-                    name=datasets.Split.VALIDATION,
-                    gen_kwargs={"filepath": data_files["dev"]},
-                ),
             ]
+        return splits
 
     def _generate_examples(self, filepath):
         date_re = re.compile(r"# date = (\d{4}-\d{2}-\d{02})")
@@ -338,6 +344,7 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
             new_sentence = False
 
             for line in f:
+                print(line)
                 if line.startswith(
                     "TOKEN	NE-COARSE-LIT	NE-COARSE-METO	NE-FINE-LIT	NE-FINE-METO	NE-FINE-COMP	NE-NESTED	NEL-LIT	NEL-METO	MISC"
                 ):
@@ -419,7 +426,7 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
                         no_space_after = []
                         end_of_line = []
                         pysdbsegment = []
-                    
+
                     # HIPE 2020 tokens are tab separated
                     splits = line.split(
                         "\t"
