@@ -344,7 +344,6 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
             new_sentence = False
 
             for line in f:
-                print(line)
                 if line.startswith(
                     "TOKEN	NE-COARSE-LIT	NE-COARSE-METO	NE-FINE-LIT	NE-FINE-METO	NE-FINE-COMP	NE-NESTED	NEL-LIT	NEL-METO	MISC"
                 ):
