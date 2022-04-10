@@ -394,37 +394,38 @@ class HIPE2020(datasets.GeneratorBasedBuilder):
                 else:
                     # New row if there is a new sentence
                     if new_sentence == True:
-                        yield guid, {
-                            "id": str(guid),
-                            "tokens": tokens,
-                            "NE_COARSE_LIT": NE_COARSE_LIT_tags,
-                            "NE_COARSE_METO_tags": NE_COARSE_METO_tags,
-                            "NE_FINE_LIT_tags": NE_FINE_LIT_tags,
-                            "NE_FINE_METO_tags": NE_FINE_METO_tags,
-                            "NE_FINE_COMP_tags": NE_FINE_COMP_tags,
-                            "NE_NESTED_tags": NE_NESTED_tags,
-                            "NEL_LIT_ID": NEL_LIT_ID,
-                            "NEL_METO_ID": NEL_METO_ID,
-                            "no_space_after": no_space_after,
-                            "end_of_line": end_of_line,
-                            "PySBDSegment":pysdbsegment,
-                            "date": date,
-                            "title": title,
-                            "document_id": document_id,
-                        }
-                        guid += 1
-                        tokens = []
-                        NE_COARSE_LIT_tags = []
-                        NE_COARSE_METO_tags = []
-                        NE_FINE_LIT_tags = []
-                        NE_FINE_METO_tags = []
-                        NE_FINE_COMP_tags = []
-                        NE_NESTED_tags = []
-                        NEL_LIT_ID = []
-                        NEL_METO_ID = []
-                        no_space_after = []
-                        end_of_line = []
-                        pysdbsegment = []
+                        if tokens:
+                            yield guid, {
+                                "id": str(guid),
+                                "tokens": tokens,
+                                "NE_COARSE_LIT": NE_COARSE_LIT_tags,
+                                "NE_COARSE_METO_tags": NE_COARSE_METO_tags,
+                                "NE_FINE_LIT_tags": NE_FINE_LIT_tags,
+                                "NE_FINE_METO_tags": NE_FINE_METO_tags,
+                                "NE_FINE_COMP_tags": NE_FINE_COMP_tags,
+                                "NE_NESTED_tags": NE_NESTED_tags,
+                                "NEL_LIT_ID": NEL_LIT_ID,
+                                "NEL_METO_ID": NEL_METO_ID,
+                                "no_space_after": no_space_after,
+                                "end_of_line": end_of_line,
+                                "PySBDSegment":pysdbsegment,
+                                "date": date,
+                                "title": title,
+                                "document_id": document_id,
+                            }
+                            guid += 1
+                            tokens = []
+                            NE_COARSE_LIT_tags = []
+                            NE_COARSE_METO_tags = []
+                            NE_FINE_LIT_tags = []
+                            NE_FINE_METO_tags = []
+                            NE_FINE_COMP_tags = []
+                            NE_NESTED_tags = []
+                            NEL_LIT_ID = []
+                            NEL_METO_ID = []
+                            no_space_after = []
+                            end_of_line = []
+                            pysdbsegment = []
 
                     # HIPE 2020 tokens are tab separated
                     splits = line.split(
